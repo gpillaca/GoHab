@@ -15,6 +15,7 @@ import com.gpillaca.gohab.ui.theme.GoHabTheme
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContent {
             GoHabTheme {
                 // A surface container using the 'background' color from the theme
