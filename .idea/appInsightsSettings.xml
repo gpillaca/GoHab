@@ -27,10 +27,10 @@
             <InsightsFilterSettings>
               <option name="connection">
                 <ConnectionSetting>
-                  <option name="appId" value="PLACEHOLDER" />
-                  <option name="mobileSdkAppId" value="" />
-                  <option name="projectId" value="" />
-                  <option name="projectNumber" value="" />
+                  <option name="appId" value="com.gpillaca.gohab" />
+                  <option name="mobileSdkAppId" value="1:548714986107:android:9e8b795ee88081fc75c0de" />
+                  <option name="projectId" value="gohab-good-habit" />
+                  <option name="projectNumber" value="548714986107" />
                 </ConnectionSetting>
               </option>
               <option name="signal" value="SIGNAL_UNSPECIFIED" />

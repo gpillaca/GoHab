@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "548714986107",
+    "project_id": "gohab-good-habit",
+    "storage_bucket": "gohab-good-habit.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:548714986107:android:9e8b795ee88081fc75c0de",
+        "android_client_info": {
+          "package_name": "com.gpillaca.gohab"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyADvubwCFGQ9XCsnu_YHuWJLAjrin45GtM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
