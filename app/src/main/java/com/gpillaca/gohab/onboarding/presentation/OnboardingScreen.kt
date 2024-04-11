@@ -1,13 +1,24 @@
-package com.gpillaca.gohab.onboarding
+package com.gpillaca.gohab.onboarding.presentation
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import com.gpillaca.gohab.R
+import com.gpillaca.gohab.onboarding.OnboardingPagerInformation
 import com.gpillaca.gohab.onboarding.component.OnboardingPager
+import androidx.hilt.navigation.compose.hiltViewModel
 
 @Composable
 fun OnboardingScreen(
+    viewModel: OnboardingViewModel = hiltViewModel(),
     onComplete: () -> Unit
 ) {
+
+    LaunchedEffect(key1 = viewModel.hasSeenOnboarding) {
+        if (viewModel.hasSeenOnboarding) {
+            onComplete()
+        }
+    }
+
     val data = mutableListOf(
         OnboardingPagerInformation(
             title = "Welcome to GoGab \n Good Habits",
@@ -25,5 +36,7 @@ fun OnboardingScreen(
             image = R.drawable.onboarding3
         )
     )
-    OnboardingPager(data, onComplete)
+    OnboardingPager(data, onComplete = {
+        viewModel.completeOnboarding()
+    })
 }

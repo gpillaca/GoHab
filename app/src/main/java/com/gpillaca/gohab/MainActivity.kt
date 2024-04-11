@@ -3,6 +3,7 @@ package com.gpillaca.gohab
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -11,8 +12,13 @@ import androidx.navigation.compose.rememberNavController
 import com.gpillaca.gohab.navigation.NavigationHost
 import com.gpillaca.gohab.navigation.NavigationRoute
 import com.gpillaca.gohab.ui.theme.GoHabTheme
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+
+    private val viewModel by viewModels<MainViewModel>()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -25,10 +31,18 @@ class MainActivity : ComponentActivity() {
                     val navController = rememberNavController()
                     NavigationHost(
                         navController = navController,
-                        startDestination = NavigationRoute.Onboarding
+                        startDestination = getStartDestination()
                     )
                 }
             }
+        }
+    }
+
+    private fun getStartDestination(): NavigationRoute {
+        return if (viewModel.hasSeenOnboarding) {
+            NavigationRoute.Login
+        } else {
+            NavigationRoute.Onboarding
         }
     }
 }
