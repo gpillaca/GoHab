@@ -7,9 +7,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:548714986107:android:9e8b795ee88081fc75c0de",
+        "mobilesdk_app_id": "1:548714986107:android:4c339cfff00f78d675c0de",
         "android_client_info": {
-          "package_name": "com.gpillaca.gohab"
+          "package_name": "pe.geff.gohab"
         }
       },
       "oauth_client": [],

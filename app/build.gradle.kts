@@ -8,11 +8,11 @@ plugins {
 }
 
 android {
-    namespace = "com.gpillaca.gohab"
+    namespace = "pe.geff.gohab"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.gpillaca.gohab"
+        applicationId = "pe.geff.gohab"
         minSdk = 26
         targetSdk = 34
         versionCode = 1
