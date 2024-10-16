@@ -1,6 +1,7 @@
 package pe.geff.gohab.core.components
 
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
@@ -20,7 +21,7 @@ fun CustomButton(
 ) {
     Button(
         onClick = onclick,
-        modifier = modifier.fillMaxWidth(),
+        modifier = modifier.fillMaxWidth().height(60.dp),
         shape = shape,
         enabled = isEnabled
     ) {
