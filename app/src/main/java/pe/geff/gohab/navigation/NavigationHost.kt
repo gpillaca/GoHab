@@ -1,5 +1,6 @@
 package pe.geff.gohab.navigation
 
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -21,7 +22,16 @@ fun NavigationHost(
             })
         }
         composable(NavigationRoute.Login.route) {
-            LoginScreen()
+            LoginScreen(navigateTo = {
+                navController.popBackStack()
+                navController.navigate(it.route)
+            })
+        }
+        composable(NavigationRoute.SignUp.route) {
+            Text(text = "SignUp Screen")
+        }
+        composable(NavigationRoute.Home.route) {
+            Text(text = "Home Screen")
         }
     }
 }

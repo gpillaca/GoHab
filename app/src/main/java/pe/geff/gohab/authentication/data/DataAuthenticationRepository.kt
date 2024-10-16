@@ -15,4 +15,8 @@ class DataAuthenticationRepository @Inject constructor(): AuthenticationReposito
             Result.failure(e)
         }
     }
+
+    override fun userUid(): String? {
+        return Firebase.auth.currentUser?.uid
+    }
 }

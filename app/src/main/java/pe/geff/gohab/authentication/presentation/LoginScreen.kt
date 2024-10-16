@@ -16,6 +16,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Lock
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -24,6 +25,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -49,9 +51,11 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import pe.geff.gohab.R
 import pe.geff.gohab.core.components.CustomButton
 import pe.geff.gohab.core.components.CustomTitle
+import pe.geff.gohab.navigation.NavigationRoute
 
 @Composable
 fun LoginScreen(
+    navigateTo: (NavigationRoute) -> Unit,
     viewModel: LoginViewModel = hiltViewModel()
 ) {
 
@@ -59,6 +63,12 @@ fun LoginScreen(
 
     var showPassword by remember { mutableStateOf(false) }
     val focusManager = LocalFocusManager.current
+
+   LaunchedEffect(loginState.isLoggedIn) {
+       if (loginState.isLoggedIn) {
+           navigateTo(NavigationRoute.Home)
+       }
+   }
 
     Box(
         modifier = Modifier
@@ -148,6 +158,11 @@ fun LoginScreen(
                     }, singleLine = true
                 )
 
+                if (!loginState.emailError.isNullOrEmpty()) {
+                    Spacer(modifier = Modifier.padding(4.dp))
+                    Text(text = loginState.emailError, color = Color.Red)
+                }
+
                 OutlinedTextField(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -203,6 +218,11 @@ fun LoginScreen(
                     }, singleLine = true
                 )
 
+                if (!loginState.passwordError.isNullOrEmpty()) {
+                    Spacer(modifier = Modifier.padding(4.dp))
+                    Text(text = loginState.passwordError, color = Color.Red)
+                }
+
                 Spacer(modifier = Modifier.padding(8.dp))
                 CustomButton(
                     onclick = {
@@ -213,13 +233,17 @@ fun LoginScreen(
                 )
                 Spacer(modifier = Modifier.padding(4.dp))
                 TextButton(onClick = {
-                    viewModel.onEvent(LoginEvent.SignUp)
+                    navigateTo(NavigationRoute.SignUp)
                 }) {
                     Text(text = "Don't have an account? Sign up")
                 }
                 Spacer(modifier = Modifier.padding(16.dp))
 
             }
+        }
+
+        if (loginState.isLoading) {
+            CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
         }
     }
 
@@ -228,6 +252,6 @@ fun LoginScreen(
 @Preview(showBackground = true)
 @Composable
 fun LoginScreenPreview() {
-    LoginScreen()
+    LoginScreen({})
 }
 
