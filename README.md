@@ -7,9 +7,9 @@ The application allows users to track their daily habits and receive reminders t
 | --- | --- | --- |
 | ![Onboarding1](https://github.com/gpillaca/GoHab/blob/master/screenshot/onboarding1.png) | ![Onboarding2](https://github.com/gpillaca/GoHab/blob/master/screenshot/onboarding2.png) | ![Onboarding3](https://github.com/gpillaca/GoHab/blob/master/screenshot/onboarding3.png) |
 
-| Login                                                                        | SignUp |
-|------------------------------------------------------------------------------| --- |
-| ![Login](https://github.com/gpillaca/GoHab/blob/master/screenshot/login.png) | In progress |
+| Login                                                                        | SignUp                                                                        |
+|------------------------------------------------------------------------------|-------------------------------------------------------------------------------|
+| ![Login](https://github.com/gpillaca/GoHab/blob/master/screenshot/login.png) | ![Login](https://github.com/gpillaca/GoHab/blob/master/screenshot/signup.png) |
 
 | Home - Tracking Habits | New Habit | Set Reminder |
 | --- | --- | --- |
