@@ -32,7 +32,11 @@ fun NavigationHost(
         }
         composable(NavigationRoute.SignUp.route) {
             SignUpScreen(navigateTo = {
-                navController.navigate(it.route)
+                navController.navigate(it.route) {
+                    popUpTo(navController.graph.id) {
+                        inclusive = true
+                    }
+                }
             })
         }
         composable(NavigationRoute.Home.route) {
