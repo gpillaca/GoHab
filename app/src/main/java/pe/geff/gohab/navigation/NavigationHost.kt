@@ -7,6 +7,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import pe.geff.gohab.authentication.presentation.login.LoginScreen
 import pe.geff.gohab.authentication.presentation.signup.SignUpScreen
+import pe.geff.gohab.home.HomeScreen
 import pe.geff.gohab.onboarding.presentation.OnboardingScreen
 
 @Composable
@@ -40,7 +41,7 @@ fun NavigationHost(
             })
         }
         composable(NavigationRoute.Home.route) {
-            Text(text = "Home Screen")
+            HomeScreen()
         }
     }
 }
