@@ -2,13 +2,16 @@ package pe.geff.gohab.home
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
@@ -23,6 +26,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import pe.geff.gohab.home.component.QuoteContentComponent
 
 @Composable
 fun HomeScreen() {
@@ -33,9 +37,12 @@ fun HomeScreen() {
 fun HomeScreenContent() {
 
     Scaffold(
-        modifier = Modifier.fillMaxSize(), topBar = {
+        modifier = Modifier
+            .fillMaxSize()
+            .background(MaterialTheme.colorScheme.background),
+        topBar = {
             TopBarComponent(onClick = {
-                    // TODO Navigate to SettingsScreen
+                // TODO Navigate to SettingsScreen
             })
         },
         floatingActionButton = {
@@ -44,12 +51,19 @@ fun HomeScreenContent() {
             })
         },
         content = { innerPadding ->
-            Box(
+            LazyColumn(
                 modifier = Modifier
+                    .background(MaterialTheme.colorScheme.background)
                     .fillMaxSize()
-                    .padding(innerPadding)
+                    .padding(innerPadding).padding(start = 16.dp, end = 16.dp)
             ) {
 
+                item {
+                    Spacer(Modifier.padding(top = 16.dp))
+                    Card(elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)) {
+                        QuoteContentComponent()
+                    }
+                }
             }
         }
     )
