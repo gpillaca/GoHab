@@ -1,7 +1,6 @@
-package pe.geff.gohab.authentication.presentation
+package pe.geff.gohab.authentication.presentation.login
 
 data class LoginState(
-    val userUid: String? = null,
     val email: String = "",
     val password: String = "",
     val emailError: String? = null,

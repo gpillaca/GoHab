@@ -1,4 +1,4 @@
-package pe.geff.gohab.authentication.presentation
+package pe.geff.gohab.authentication.presentation.login
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -12,9 +12,9 @@ import pe.geff.gohab.authentication.domain.usecase.LoginUseCase
 import pe.geff.gohab.authentication.domain.usecase.PasswordResult
 import pe.geff.gohab.authentication.domain.usecase.ValidateEmailUseCase
 import pe.geff.gohab.authentication.domain.usecase.ValidatePasswordUseCase
-import pe.geff.gohab.authentication.presentation.LoginEvent.EmailChange
-import pe.geff.gohab.authentication.presentation.LoginEvent.Login
-import pe.geff.gohab.authentication.presentation.LoginEvent.PasswordChange
+import pe.geff.gohab.authentication.presentation.login.LoginEvent.EmailChange
+import pe.geff.gohab.authentication.presentation.login.LoginEvent.Login
+import pe.geff.gohab.authentication.presentation.login.LoginEvent.PasswordChange
 import javax.inject.Inject
 
 @HiltViewModel
@@ -52,7 +52,7 @@ class LoginViewModel @Inject constructor(
             loginState = loginState.copy(passwordError = passwordResult.errorMessage)
         }
 
-        if (!loginState.passwordError.isNullOrEmpty() && !loginState.emailError.isNullOrEmpty()) {
+        if (loginState.passwordError.isNullOrEmpty() && loginState.emailError.isNullOrEmpty()) {
             loginState = loginState.copy(isLoading = true)
             viewModelScope.launch {
                 loginUseCase(loginState.email, loginState.password).onSuccess {

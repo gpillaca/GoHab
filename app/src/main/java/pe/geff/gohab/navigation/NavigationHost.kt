@@ -5,7 +5,8 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import pe.geff.gohab.authentication.presentation.LoginScreen
+import pe.geff.gohab.authentication.presentation.login.LoginScreen
+import pe.geff.gohab.authentication.presentation.signup.SignUpScreen
 import pe.geff.gohab.onboarding.presentation.OnboardingScreen
 
 @Composable
@@ -30,7 +31,9 @@ fun NavigationHost(
             })
         }
         composable(NavigationRoute.SignUp.route) {
-            Text(text = "SignUp Screen")
+            SignUpScreen(navigateTo = {
+                navController.navigate(it.route)
+            })
         }
         composable(NavigationRoute.Home.route) {
             Text(text = "Home Screen")

@@ -1,4 +1,4 @@
-package pe.geff.gohab.authentication.presentation
+package pe.geff.gohab.authentication.presentation.login
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background

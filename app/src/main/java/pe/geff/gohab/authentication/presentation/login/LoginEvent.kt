@@ -1,4 +1,4 @@
-package pe.geff.gohab.authentication.presentation
+package pe.geff.gohab.authentication.presentation.login
 
 sealed interface LoginEvent {
     data class EmailChange(val email: String): LoginEvent

@@ -16,6 +16,15 @@ class DataAuthenticationRepository @Inject constructor(): AuthenticationReposito
         }
     }
 
+    override suspend fun signUp(username: String, password: String): Result<Unit> {
+        return try {
+            Firebase.auth.createUserWithEmailAndPassword(username, password).await()
+            Result.success(Unit)
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
     override fun userUid(): String? {
         return Firebase.auth.currentUser?.uid
     }
