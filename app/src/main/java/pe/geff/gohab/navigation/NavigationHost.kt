@@ -23,7 +23,9 @@ fun NavigationHost(
         }
         composable(NavigationRoute.Login.route) {
             LoginScreen(navigateTo = {
-                navController.popBackStack()
+                if (NavigationRoute.Home == it) {
+                    navController.popBackStack()
+                }
                 navController.navigate(it.route)
             })
         }

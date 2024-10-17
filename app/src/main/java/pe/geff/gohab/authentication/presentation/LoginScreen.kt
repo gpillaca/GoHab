@@ -22,6 +22,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -52,6 +53,7 @@ import pe.geff.gohab.R
 import pe.geff.gohab.core.components.CustomButton
 import pe.geff.gohab.core.components.CustomTitle
 import pe.geff.gohab.navigation.NavigationRoute
+import pe.geff.gohab.ui.theme.GoHabTheme
 
 @Composable
 fun LoginScreen(
@@ -64,11 +66,11 @@ fun LoginScreen(
     var showPassword by remember { mutableStateOf(false) }
     val focusManager = LocalFocusManager.current
 
-   LaunchedEffect(loginState.isLoggedIn) {
-       if (loginState.isLoggedIn) {
-           navigateTo(NavigationRoute.Home)
-       }
-   }
+    LaunchedEffect(loginState.isLoggedIn) {
+        if (loginState.isLoggedIn) {
+            navigateTo(NavigationRoute.Home)
+        }
+    }
 
     Box(
         modifier = Modifier
@@ -137,7 +139,7 @@ fun LoginScreen(
                         .fillMaxWidth()
                         .padding(start = 16.dp, end = 16.dp),
                     keyboardOptions = KeyboardOptions(
-                        autoCorrect = false,
+                        autoCorrectEnabled = false,
                         keyboardType = KeyboardType.Email,
                         imeAction = ImeAction.Next
                     ),
@@ -168,7 +170,7 @@ fun LoginScreen(
                         .fillMaxWidth()
                         .padding(start = 16.dp, end = 16.dp),
                     keyboardOptions = KeyboardOptions(
-                        autoCorrect = false,
+                        autoCorrectEnabled = false,
                         keyboardType = KeyboardType.Password,
                         imeAction = ImeAction.Done
                     ),
@@ -249,9 +251,20 @@ fun LoginScreen(
 
 }
 
+@Composable
+private fun LoginScreenContent(navigateTo: (NavigationRoute) -> Unit) {
+
+}
+
 @Preview(showBackground = true)
 @Composable
 fun LoginScreenPreview() {
-    LoginScreen({})
+    GoHabTheme {
+        Surface(
+            modifier = Modifier.fillMaxSize(),
+        ) {
+            LoginScreenContent(navigateTo = {})
+        }
+    }
 }
 
