@@ -12,16 +12,11 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
-import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Email
-import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -34,6 +29,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
+import androidx.compose.ui.focus.FocusManager
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
@@ -41,8 +37,6 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
@@ -51,6 +45,8 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import pe.geff.gohab.R
 import pe.geff.gohab.core.components.CustomButton
+import pe.geff.gohab.core.components.CustomOutlinedTextField
+import pe.geff.gohab.core.components.CustomPasswordOutlinedTextField
 import pe.geff.gohab.core.components.CustomTitle
 import pe.geff.gohab.navigation.NavigationRoute
 import pe.geff.gohab.ui.theme.GoHabTheme
@@ -63,43 +59,28 @@ fun LoginScreen(
 
     val loginState = viewModel.loginState
 
-    var showPassword by remember { mutableStateOf(false) }
-    val focusManager = LocalFocusManager.current
-
     LaunchedEffect(loginState.isLoggedIn) {
         if (loginState.isLoggedIn) {
             navigateTo(NavigationRoute.Home)
         }
     }
 
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-    ) {
-        Image(
-            painterResource(id = R.drawable.loginbackground),
-            contentDescription = "Login",
-            contentScale = ContentScale.Crop,
-            modifier = Modifier
-                .aspectRatio(1f)
-                .graphicsLayer(
-                    scaleX = 1.27f,
-                    scaleY = 1.27f
-                )
-        )
-        Spacer(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(
-                    Brush.verticalGradient(
-                        colors = listOf(
-                            Color.Transparent,
-                            MaterialTheme.colorScheme.background,
-                            MaterialTheme.colorScheme.background
-                        )
-                    )
-                )
-        )
+    LoginScreenContent(loginState, navigateTo) {
+        viewModel.onEvent(it)
+    }
+
+}
+
+@Composable
+private fun LoginScreenContent(
+    loginState: LoginState,
+    navigateTo: (NavigationRoute) -> Unit,
+    onEvent: (LoginEvent) -> Unit
+) {
+    val focusManager = LocalFocusManager.current
+
+    Box(modifier = Modifier.fillMaxSize()) {
+        BackgroundImage()
 
         Column(
             modifier = Modifier.fillMaxSize(),
@@ -134,30 +115,12 @@ fun LoginScreen(
                     color = MaterialTheme.colorScheme.background
                 )
 
-                OutlinedTextField(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(start = 16.dp, end = 16.dp),
-                    keyboardOptions = KeyboardOptions(
-                        autoCorrectEnabled = false,
-                        keyboardType = KeyboardType.Email,
-                        imeAction = ImeAction.Next
-                    ),
-                    keyboardActions = KeyboardActions(
-                        onAny = { focusManager.moveFocus(FocusDirection.Next) }
-                    ),
-                    value = loginState.email, onValueChange = {
-                        viewModel.onEvent(LoginEvent.EmailChange(it))
-                    },
-                    leadingIcon = {
-                        Icon(
-                            imageVector = Icons.Default.Email,
-                            contentDescription = "Email"
-                        )
-                    },
-                    label = {
-                        Text(text = "Email")
-                    }, singleLine = true
+                EmailComponent(
+                    email = loginState.email,
+                    focusManager = focusManager,
+                    onValueChange = {
+                        onEvent(LoginEvent.EmailChange(it))
+                    }
                 )
 
                 if (!loginState.emailError.isNullOrEmpty()) {
@@ -165,59 +128,12 @@ fun LoginScreen(
                     Text(text = loginState.emailError, color = Color.Red)
                 }
 
-                OutlinedTextField(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(start = 16.dp, end = 16.dp),
-                    keyboardOptions = KeyboardOptions(
-                        autoCorrectEnabled = false,
-                        keyboardType = KeyboardType.Password,
-                        imeAction = ImeAction.Done
-                    ),
-                    keyboardActions = KeyboardActions(
-                        onAny = { focusManager.clearFocus() }
-                    ),
-                    visualTransformation = if (showPassword) {
-                        VisualTransformation.None
-                    } else {
-                        PasswordVisualTransformation()
-                    },
-                    value = loginState.password,
-                    leadingIcon = {
-                        Icon(
-                            imageVector = Icons.Default.Lock,
-                            contentDescription = "Password"
-                        )
-                    },
-                    trailingIcon = {
-                        IconButton(onClick = {
-                            showPassword = !showPassword
-                        }) {
-                            val (icon, iconColor, description) = if (showPassword) {
-                                Triple(
-                                    R.drawable.ic_eye_visibility_off,
-                                    Color.Gray,
-                                    "Hide password"
-                                )
-                            } else {
-                                Triple(
-                                    R.drawable.ic_eye_visibility,
-                                    MaterialTheme.colorScheme.primary,
-                                    "Show password"
-                                )
-                            }
-                            Icon(
-                                painter = painterResource(id = icon),
-                                tint = iconColor,
-                                contentDescription = description
-                            )
-                        }
-                    },
+                PasswordComponent(
+                    password = loginState.password,
+                    focusManager = focusManager,
                     onValueChange = {
-                        viewModel.onEvent(LoginEvent.PasswordChange(it))
-                    }, label = {
-                        Text(text = "Password")
-                    }, singleLine = true
+                        onEvent(LoginEvent.PasswordChange(it))
+                    }
                 )
 
                 if (!loginState.passwordError.isNullOrEmpty()) {
@@ -228,11 +144,12 @@ fun LoginScreen(
                 Spacer(modifier = Modifier.padding(8.dp))
                 CustomButton(
                     onclick = {
-                        viewModel.onEvent(LoginEvent.Login)
+                        onEvent(LoginEvent.Login)
                     },
                     text = "Login",
                     modifier = Modifier.padding(start = 16.dp, end = 16.dp)
                 )
+
                 Spacer(modifier = Modifier.padding(4.dp))
                 TextButton(onClick = {
                     navigateTo(NavigationRoute.SignUp)
@@ -240,7 +157,6 @@ fun LoginScreen(
                     Text(text = "Don't have an account? Sign up")
                 }
                 Spacer(modifier = Modifier.padding(16.dp))
-
             }
         }
 
@@ -248,12 +164,91 @@ fun LoginScreen(
             CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
         }
     }
-
 }
 
 @Composable
-private fun LoginScreenContent(navigateTo: (NavigationRoute) -> Unit) {
+fun BackgroundImage() {
+    Image(
+        painterResource(id = R.drawable.loginbackground),
+        contentDescription = "Login",
+        contentScale = ContentScale.Crop,
+        modifier = Modifier
+            .aspectRatio(1f)
+            .graphicsLayer(
+                scaleX = 1.27f,
+                scaleY = 1.27f
+            )
+    )
+    Spacer(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(
+                Brush.verticalGradient(
+                    colors = listOf(
+                        Color.Transparent,
+                        MaterialTheme.colorScheme.background,
+                        MaterialTheme.colorScheme.background
+                    )
+                )
+            )
+    )
+}
 
+@Composable
+fun PasswordComponent(password: String, focusManager: FocusManager, onValueChange: (String) -> Unit) {
+    var showPassword by remember { mutableStateOf(false) }
+
+    CustomPasswordOutlinedTextField(
+        value = password,
+        visualTransformation = if (showPassword) {
+            VisualTransformation.None
+        } else {
+            PasswordVisualTransformation()
+        },
+        keyboardActions = KeyboardActions(
+            onAny = { focusManager.clearFocus() }
+        ),
+        onValueChange = onValueChange,
+        trailingIcon = {
+            IconButton(onClick = {
+                showPassword = !showPassword
+            }) {
+                val (icon, iconColor, description) = if (showPassword) {
+                    Triple(
+                        R.drawable.ic_eye_visibility_off,
+                        Color.Gray,
+                        "Hide password"
+                    )
+                } else {
+                    Triple(
+                        R.drawable.ic_eye_visibility,
+                        MaterialTheme.colorScheme.primary,
+                        "Show password"
+                    )
+                }
+                Icon(
+                    painter = painterResource(id = icon),
+                    tint = iconColor,
+                    contentDescription = description
+                )
+            }
+        }
+    )
+}
+
+@Composable
+fun EmailComponent(
+    email: String,
+    onValueChange: (String) -> Unit,
+    focusManager: FocusManager
+) {
+    CustomOutlinedTextField(
+        value = email,
+        onValueChange = onValueChange,
+        keyboardActions = KeyboardActions(
+            onAny = { focusManager.moveFocus(FocusDirection.Next) }
+        )
+    )
 }
 
 @Preview(showBackground = true)
@@ -263,8 +258,7 @@ fun LoginScreenPreview() {
         Surface(
             modifier = Modifier.fillMaxSize(),
         ) {
-            LoginScreenContent(navigateTo = {})
+            LoginScreenContent(navigateTo = {}, loginState = LoginState(), onEvent = {})
         }
     }
 }
-
